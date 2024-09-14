@@ -1,8 +1,10 @@
 # Dividence-for-Spectre-Divide
+[![Discord](https://img.shields.io/discord/1284573063442071703?logo=Discord&label=discord)](https://discord.gg/DnaNjHx7an)
 
 **Visual cheat done for research purposes.**
 
 Currently works only on 1920x1080 game resolution!
+
 This project includes features such as no-recoil, aimbot and triggerbot built using Python and DearPyGui.
 
 ## Features
