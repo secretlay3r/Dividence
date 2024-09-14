@@ -1,3 +1,6 @@
+![](https://api.visitorbadge.io/api/VisitorHit?user=secretlay3r&repo=Dividence-for-Spectre-Divide&countColor=%237B1E7A)
+[![GitHub stars](https://img.shields.io/github/stars/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/stargazers)
+
 # Dividence-for-Spectre-Divide
 
 **Visual cheat done for research purposes.**
@@ -10,7 +13,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 - Color-based Triggerbot
 - No-Recoil
 
-## How to Install
+## How to compile
 1. **Download the repository**  
 
    Download the repository to your PC.
@@ -28,6 +31,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
    pip install dearpygui mss numpy pywin32 pyautogui
 6. **Compiling**
 
+   I highly recommend obfuscating the .exe as it can be detected, but here are the basic compilation instructions.
    Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following command to compile all files to exe:
    
    ```bash
