@@ -7,11 +7,17 @@ Currently works only on 1920x1080 game resolution!
 
 This project includes features such as no-recoil, aimbot and triggerbot built using Python and DearPyGui.
 
+**TODO:**
+- Add different screen resoultion support
+- Add aimbot and triggerbot key
+
 ## Features
 
 - Color-based Aimbot
 - Color-based Triggerbot
 - No-Recoil
+
+![Untitled](https://github.com/user-attachments/assets/09547183-821a-497e-9a32-f66431173791)
 
 ## How to install
 1. **Install Dependencies**
