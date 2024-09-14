@@ -13,6 +13,9 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 - Color-based Triggerbot
 - No-Recoil
 
+## How to install
+**Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases/tag/exe) and download latest version (it's not obfuscated!)**
+
 ## How to compile
 1. **Download the repository**  
 
