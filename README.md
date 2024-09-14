@@ -1,6 +1,3 @@
-![](https://api.visitorbadge.io/api/VisitorHit?user=secretlay3r&repo=Dividence-for-Spectre-Divide&countColor=%237B1E7A)
-[![GitHub stars](https://img.shields.io/github/stars/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/stargazers)
-
 # Dividence-for-Spectre-Divide
 
 **Visual cheat done for research purposes.**
@@ -14,7 +11,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 - No-Recoil
 
 ## How to install
-**Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases/tag/exe) and download latest version (it's not obfuscated!)**
+**Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated!)**
 
 ## How to compile
 1. **Download the repository**  
@@ -40,3 +37,6 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
    ```bash
    pyinstaller --onefile --name Dividence main.py norecoil.py aimbot.py triggerbot.py
 
+[![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
+[![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/secretlay3r/Dividence-for-Spectre-Divide)](/../../commits/)
+[![GitHub stars](https://img.shields.io/github/stars/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/stargazers)
