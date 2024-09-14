@@ -7,6 +7,8 @@ Currently works only on 1920x1080 game resolution!
 
 This project includes features such as no-recoil, aimbot and triggerbot built using Python and DearPyGui.
 
+[UnknownCheats link](https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html)
+
 **TODO:**
 - Add different screen resoultion support
 - Add aimbot and triggerbot key
