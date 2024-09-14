@@ -1,5 +1,5 @@
 # Dividence-for-Spectre-Divide
-[![Discord](https://img.shields.io/discord/1284573063442071703?logo=Discord&label=discord)](https://discord.gg/DnaNjHx7an)
+[![Discord](https://dcbadge.limes.pink/api/server/DnaNjHx7an)](https://discord.gg/DnaNjHx7an)
 
 **Visual cheat done for research purposes.**
 
