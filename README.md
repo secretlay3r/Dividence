@@ -2,6 +2,7 @@
 
 **Visual cheat done for research purposes.**
 
+Currently works only on 1920x1080 game resolution!
 This project includes features such as no-recoil, aimbot and triggerbot built using Python and DearPyGui.
 
 ## Features
