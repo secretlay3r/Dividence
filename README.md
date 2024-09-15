@@ -11,15 +11,16 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 
 **TODO:**
 - Add different screen resoultion support
-- Add aimbot and triggerbot key
+- Add better aimbot correction when moving
+- Add aimbot and triggerbot mouse keys (like M3, M4 etc.)
 
 ## Features
 
 - Color-based Aimbot
 - Color-based Triggerbot
 - No-Recoil
-
-![Untitled](https://github.com/user-attachments/assets/09547183-821a-497e-9a32-f66431173791)
+  
+![Untitled](https://github.com/user-attachments/assets/fe3a859e-ce86-4c8b-b84f-0f79a1a6d2ea)
 
 ## How to install
 1. **Install Dependencies**
@@ -27,7 +28,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
    Open a command prompt and run the following command to install the required dependencies:
 
    ```bash
-   pip install dearpygui mss numpy pywin32 pyautogui
+   pip install dearpygui mss numpy pywin32 pyautogui keyboard
    
 2. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated!)**
 
@@ -46,7 +47,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
    Open a command prompt and run the following command to install the required dependencies:
 
    ```bash
-   pip install dearpygui mss numpy pywin32 pyautogui
+   pip install dearpygui mss numpy pywin32 pyautogui keyboard
 6. **Compiling**
 
    I highly recommend obfuscating the .exe as it can be detected, but here are the basic compilation instructions.
