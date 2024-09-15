@@ -8,15 +8,20 @@ VK_XBUTTON4 = 0x05
 enabled = False
 target_colors = []
 aimbot_speed = 0.9
+monitor_resolution = (1920, 1080)  # Default res
 
 color_ranges = {
-    "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},  # #C57824
-    "YELLOW": {'r': (78, 133), 'g': (237,255), 'b': (237,255)},  # #FFFF3D
-    "PURPLE": {'r': (144, 255), 'g': (60, 99), 'b': (194, 255)},  # #FF33FF
-    "RED": {'r': (80, 135), 'g': (100, 130), 'b': (247, 255)},  # #FF3132
-    "GREEN": {'r': (30, 97), 'g': (240, 255), 'b': (30, 110)},  # #2EFB00
-    "CYAN": {'r': (246, 255), 'g': (246, 255), 'b': (66, 100)},  # #00FFFF
+    "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},
+    "YELLOW": {'r': (78, 133), 'g': (237, 255), 'b': (237, 255)},
+    "PURPLE": {'r': (144, 255), 'g': (60, 99), 'b': (194, 255)},
+    "RED": {'r': (80, 135), 'g': (100, 130), 'b': (247, 255)},
+    "GREEN": {'r': (30, 97), 'g': (240, 255), 'b': (30, 110)},
+    "CYAN": {'r': (246, 255), 'g': (246, 255), 'b': (66, 100)},
 }
+
+def set_monitor_resolution(width, height):
+    global monitor_resolution
+    monitor_resolution = (width, height)
 
 def set_target_colors(selected_colors):
     global target_colors
@@ -34,15 +39,24 @@ def toggle_aimbot(enable):
 
 def run_aimbot():
     sct = mss.mss()
-    monitor = {"top": 400, "left": 760, "width": 400, "height": 400}  # FOV
-
+    highres_region = get_highres_region()
     while enabled:
-        screenshot = np.array(sct.grab(monitor))
+        screenshot = np.array(sct.grab(highres_region))
         for color_range in target_colors:
             target_pos = detect_color_in_range(screenshot, color_range)
             if target_pos:
-                aim_at_target(target_pos, monitor)
+                aim_at_target(target_pos, highres_region)
         time.sleep(0.001)
+
+def get_highres_region():
+    width, height = monitor_resolution
+    if (width, height) == (1920, 1080):
+        return {"top": 400, "left": 760, "width": 400, "height": 400}
+    elif (width, height) == (1280, 720):
+        return {"top": int(400 * 720 / 1080), "left": int(760 * 1280 / 1920),
+                "width": int(400 * 1280 / 1920), "height": int(400 * 720 / 1080)}
+    else:
+        raise ValueError("Unsupported resolution")
 
 def detect_color_in_range(screenshot, color_range):
     r_min, r_max = color_range['r']
@@ -56,7 +70,7 @@ def detect_color_in_range(screenshot, color_range):
     )
 
     y, x = np.where(mask)
-    if len(x) == 0 or len(y) == 0:
+    if not x.size or not y.size:
         return None
 
     avg_x = int(np.mean(x))
@@ -64,14 +78,13 @@ def detect_color_in_range(screenshot, color_range):
 
     return (avg_x, avg_y)
 
-def aim_at_target(target_pos, monitor):
-    monitor_center_x = monitor['width'] // 2
-    monitor_center_y = monitor['height'] // 2
+def aim_at_target(target_pos, highres):
+    highres_center_x = highres['width'] // 2
+    highres_center_y = highres['height'] // 2
 
     target_x, target_y = target_pos
-
-    distance_x = target_x - monitor_center_x
-    distance_y = target_y - monitor_center_y
+    distance_x = target_x - highres_center_x
+    distance_y = target_y - highres_center_y
 
     offset_x = 0
     offset_y = 53
@@ -83,9 +96,7 @@ def aim_at_target(target_pos, monitor):
         smooth_move(distance_x, distance_y)
 
 def smooth_move(dx, dy, speed_factor=None):
-    if speed_factor is None:
-        speed_factor = aimbot_speed
-
+    speed_factor = speed_factor or aimbot_speed
     distance = np.sqrt(dx**2 + dy**2)
     if distance == 0:
         return
@@ -102,7 +113,6 @@ def get_key_state(key_code):
     return ctypes.windll.user32.GetAsyncKeyState(key_code)
 
 def main():
-    global enabled
     frame_rate = 900
     interval = 1.0 / frame_rate
 
