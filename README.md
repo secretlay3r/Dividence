@@ -23,14 +23,19 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 ![Untitled](https://github.com/user-attachments/assets/fe3a859e-ce86-4c8b-b84f-0f79a1a6d2ea)
 
 ## How to install
-1. **Install Dependencies**
+1. **Install Python**
+   
+   Make sure Python is installed. You can download it from [python.org](https://www.python.org/downloads/).  
+   During installation, check the box to "Add Python to PATH".
+   
+2. **Install Dependencies**
    
    Open a command prompt and run the following command to install the required dependencies:
 
    ```bash
    pip install dearpygui mss numpy pywin32 pyautogui keyboard
    
-2. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated!)**
+3. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated!)**
 
 ## How to compile
 1. **Download the repository**  
