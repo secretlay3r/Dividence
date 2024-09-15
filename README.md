@@ -58,10 +58,17 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 
    I highly recommend obfuscating the .exe as it can be detected, but here are the basic compilation instructions.
    Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following command to compile all files to exe:
+
+   ```bash
+   pip install pyinstaller
+   ```
+
+   then, run
    
    ```bash
    pyinstaller --onefile --name Dividence main.py norecoil.py aimbot.py triggerbot.py
+   ```
 
-[![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
-[![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/secretlay3r/Dividence-for-Spectre-Divide)](/../../commits/)
-[![GitHub stars](https://img.shields.io/github/stars/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/stargazers)
+  [![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
+  [![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/secretlay3r/Dividence-for-Spectre-Divide)](/../../commits/)
+  [![GitHub stars](https://img.shields.io/github/stars/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/stargazers)
