@@ -12,7 +12,8 @@ VK_XBUTTON4 = 0x05
 
 enabled = False
 target_colors = []
-scan_area_size = 10
+scan_area_size = 20
+monitor_resolution = (1920, 1080)  # Default res
 
 color_ranges = {
     "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},  # #C57824
@@ -22,6 +23,10 @@ color_ranges = {
     "GREEN": {'r': (30, 97), 'g': (240, 255), 'b': (30, 110)},  # #2EFB00
     "CYAN": {'r': (246, 255), 'g': (246, 255), 'b': (66, 100)},  # #00FFFF
 }
+
+def set_monitor_resolution(width, height):
+    global monitor_resolution
+    monitor_resolution = (width, height)
 
 def set_target_colors(selected_colors):
     global target_colors
@@ -40,20 +45,34 @@ def set_scan_area_size(new_size):
 def run_triggerbot():
     sct = mss.mss()
     lower_delay, upper_delay = 0.005, 0.02  # Randomized delay range between shots
+    monitor = get_monitor_region()
 
     while enabled:
-        monitor = {
-            "top": 540 - scan_area_size // 2,
-            "left": 960 - scan_area_size // 2,
-            "width": scan_area_size,
-            "height": scan_area_size
-        }
         screenshot = np.array(sct.grab(monitor))
         for color_range in target_colors:
             if detect_color_in_range(screenshot, color_range):
                 shoot()
                 time.sleep(random.uniform(lower_delay, upper_delay))  # Random delay between clicks
         time.sleep(0.001)
+
+def get_monitor_region():
+    if monitor_resolution == (1920, 1080):
+        monitor = {
+            "top": 540 - scan_area_size // 2,
+            "left": 960 - scan_area_size // 2,
+            "width": scan_area_size,
+            "height": scan_area_size
+        }
+    elif monitor_resolution == (1280, 720):
+        monitor = {
+            "top": int(540 * 720 / 1080) - scan_area_size // 2,
+            "left": int(960 * 1280 / 1920) - scan_area_size // 2,
+            "width": int(scan_area_size * 1280 / 1920),
+            "height": int(scan_area_size * 720 / 1080)
+        }
+    else:
+        raise ValueError("Unsupported resolution")
+    return monitor
 
 def detect_color_in_range(screenshot, color_range):
     r_min, r_max = color_range['r']
