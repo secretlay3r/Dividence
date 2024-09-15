@@ -3,7 +3,7 @@
 
 **Visual cheat done for research purposes.**
 
-Currently works only on 1920x1080 game resolution!
+Currently works only on 1920x1080 (best option) and 1280x720 game resolution!
 
 This project includes features such as no-recoil, aimbot and triggerbot built using Python and DearPyGui.
 
@@ -13,14 +13,15 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 - Add different screen resoultion support
 - Add better aimbot correction when moving
 - Add aimbot and triggerbot mouse keys (like M3, M4 etc.)
-
+- Add aimbot and aimbot on hold M2
+  
 ## Features
 
 - Color-based Aimbot
 - Color-based Triggerbot
 - No-Recoil
   
-![Untitled](https://github.com/user-attachments/assets/fe3a859e-ce86-4c8b-b84f-0f79a1a6d2ea)
+![Untitled](https://github.com/user-attachments/assets/4343d636-43e6-4c8d-8ce3-53b27a0fbf89)
 
 ## How to install
 1. **Install Python**
