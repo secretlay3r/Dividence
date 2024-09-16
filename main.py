@@ -15,6 +15,10 @@ y_recoil_compensation = 2.0
 
 aimbot_toggle_keys = ["F1"]
 triggerbot_toggle_keys = ["F2"]
+
+aimbot_toggled = False
+triggerbot_toggled = False
+
 aimbot_on_hold = False
 triggerbot_on_hold = False
 
@@ -135,63 +139,60 @@ def set_y_recoil(sender, app_data):
     norecoil.vertical_range = y_recoil_compensation
 
 def assign_key(field):
-    key = keyboard.read_key()
-    assigned_key = keys.get(key.lower(), key.upper())
-    if field == "aimbot":
-        global aimbot_toggle_keys
-        aimbot_toggle_keys = [assigned_key]
-        dpg.set_value("aimbot_key_field", assigned_key)
-    elif field == "triggerbot":
-        global triggerbot_toggle_keys
-        triggerbot_toggle_keys = [assigned_key]
-        dpg.set_value("triggerbot_key_field", assigned_key)
+    key = keyboard.read_event()
+    if key.event_type == keyboard.KEY_DOWN:
+        assigned_key = keys.get(key.name.lower(), key.name.upper())
+        if field == "aimbot":
+            global aimbot_toggle_keys
+            aimbot_toggle_keys = [assigned_key]
+            dpg.set_value("aimbot_key_field", assigned_key)
+        elif field == "triggerbot":
+            global triggerbot_toggle_keys
+            triggerbot_toggle_keys = [assigned_key]
+            dpg.set_value("triggerbot_key_field", assigned_key)
 
 def is_right_mouse_button_down():
     return ctypes.windll.user32.GetAsyncKeyState(0x02) != 0
 
 def check_toggle_keys():
+    global aimbot_toggled, triggerbot_toggled
     global aimbot_on_hold, triggerbot_on_hold
 
-    aimbot_on_hold = dpg.get_value("aimbot_on_hold")
-    triggerbot_on_hold = dpg.get_value("triggerbot_on_hold")
-
     if keyboard.is_pressed(aimbot_toggle_keys[0]):
-        if not aimbot_on_hold or is_right_mouse_button_down():
-            if not dpg.get_value("aimbot_checkbox"):
-                dpg.set_value("aimbot_checkbox", True)
-                aimbot.toggle_aimbot(True)
-                winsound.Beep(1000, 200)
-        elif aimbot_on_hold and not is_right_mouse_button_down():
-            dpg.set_value("aimbot_checkbox", False)
-            aimbot.toggle_aimbot(False)
-            winsound.Beep(500, 200)
+        if not aimbot_on_hold:
+            aimbot_toggled = not aimbot_toggled
+            dpg.set_value("aimbot_checkbox", aimbot_toggled)
+            aimbot.toggle_aimbot(aimbot_toggled)
+            winsound.Beep(1000 if aimbot_toggled else 500, 200)
+            aimbot_on_hold = True
+    else:
+        aimbot_on_hold = False
 
     if keyboard.is_pressed(triggerbot_toggle_keys[0]):
-        if not triggerbot_on_hold or is_right_mouse_button_down():
-            if not dpg.get_value("triggerbot_checkbox"):
-                dpg.set_value("triggerbot_checkbox", True)
-                triggerbot.toggle_triggerbot(True)
-                winsound.Beep(1000, 200)
-        elif triggerbot_on_hold and not is_right_mouse_button_down():
-            dpg.set_value("triggerbot_checkbox", False)
-            triggerbot.toggle_triggerbot(False)
-            winsound.Beep(500, 200)
+        if not triggerbot_on_hold:
+            triggerbot_toggled = not triggerbot_toggled
+            dpg.set_value("triggerbot_checkbox", triggerbot_toggled)
+            triggerbot.toggle_triggerbot(triggerbot_toggled)
+            winsound.Beep(1000 if triggerbot_toggled else 500, 200)
+            triggerbot_on_hold = True
+    else:
+        triggerbot_on_hold = False 
 
     if is_right_mouse_button_down():
-        if aimbot_on_hold and not dpg.get_value("aimbot_checkbox"):
+        if dpg.get_value("aimbot_on_hold") and not dpg.get_value("aimbot_checkbox"):
             dpg.set_value("aimbot_checkbox", True)
             aimbot.toggle_aimbot(True)
-        if triggerbot_on_hold and not dpg.get_value("triggerbot_checkbox"):
+        if dpg.get_value("triggerbot_on_hold") and not dpg.get_value("triggerbot_checkbox"):
             dpg.set_value("triggerbot_checkbox", True)
             triggerbot.toggle_triggerbot(True)
     else:
-        if aimbot_on_hold and dpg.get_value("aimbot_checkbox"):
+        if dpg.get_value("aimbot_on_hold") and dpg.get_value("aimbot_checkbox"):
             dpg.set_value("aimbot_checkbox", False)
             aimbot.toggle_aimbot(False)
-        if triggerbot_on_hold and dpg.get_value("triggerbot_checkbox"):
+        if dpg.get_value("triggerbot_on_hold") and dpg.get_value("triggerbot_checkbox"):
             dpg.set_value("triggerbot_checkbox", False)
             triggerbot.toggle_triggerbot(False)
-            
+
 def apply_custom_theme():
     with dpg.theme() as theme:
         with dpg.theme_component(dpg.mvCheckbox):
