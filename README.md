@@ -13,7 +13,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 - Add different screen resoultion support
 - Add better aimbot correction when moving
 - Add aimbot and triggerbot mouse keys (like M3, M4 etc.)
-- Add aimbot and aimbot on hold M2
+- Add aimbot and triggerbot on hold M2
   
 ## Features
 
