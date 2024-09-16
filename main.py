@@ -113,7 +113,7 @@ def toggle_triggerbot(sender, app_data):
         triggerbot.toggle_triggerbot(enable=True)
         winsound.Beep(1000, 200)
     else:
-        triggerbot.toggle_triggerbot(enable(False))
+        triggerbot.toggle_triggerbot(enable=False)
         winsound.Beep(500, 200)
 
 def set_scan_area(sender, app_data):
@@ -134,7 +134,6 @@ def set_y_recoil(sender, app_data):
     y_recoil_compensation = dpg.get_value(sender)
     norecoil.vertical_range = y_recoil_compensation
 
-# Assign key
 def assign_key(field):
     key = keyboard.read_key()
     assigned_key = keys.get(key.lower(), key.upper())
