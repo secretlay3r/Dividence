@@ -5,6 +5,8 @@
 
 Currently works only on 1920x1080 (best option) and 1280x720 game resolution!
 
+Config must be in the same folder as the exe to make it work!
+
 This project includes features such as no-recoil, aimbot and triggerbot built using Python and DearPyGui.
 
 [UnknownCheats link](https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html)
@@ -12,16 +14,16 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 **TODO:**
 - Add different screen resoultion support
 - Add better aimbot correction when moving
-- Add aimbot and triggerbot mouse keys (like M3, M4 etc.)
-- Add aimbot and triggerbot on hold M2
+- and more
   
 ## Features
 
 - Color-based Aimbot
 - Color-based Triggerbot
 - No-Recoil
+- Config system
   
-![Untitled](https://github.com/user-attachments/assets/4343d636-43e6-4c8d-8ce3-53b27a0fbf89)
+![Untitled](https://github.com/user-attachments/assets/a3aaa417-735b-492d-b4f0-7318b32e0380)
 
 ## How to install
 1. **Install Python**
