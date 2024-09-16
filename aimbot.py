@@ -8,8 +8,9 @@ VK_XBUTTON4 = 0x05
 enabled = False
 target_colors = []
 aimbot_speed = 0.9
-monitor_resolution = (1920, 1080)  # Default res
+monitor_resolution = (1920, 1080)  # Default resolution
 
+# Color ranges for detection
 color_ranges = {
     "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},
     "YELLOW": {'r': (78, 133), 'g': (237, 255), 'b': (237, 255)},
@@ -50,13 +51,7 @@ def run_aimbot():
 
 def get_highres_region():
     width, height = monitor_resolution
-    if (width, height) == (1920, 1080):
-        return {"top": 400, "left": 760, "width": 400, "height": 400}
-    elif (width, height) == (1280, 720):
-        return {"top": int(400 * 720 / 1080), "left": int(760 * 1280 / 1920),
-                "width": int(400 * 1280 / 1920), "height": int(400 * 720 / 1080)}
-    else:
-        raise ValueError("Unsupported resolution")
+    return {"top": height // 2 - 200, "left": width // 2 - 200, "width": 400, "height": 400}
 
 def detect_color_in_range(screenshot, color_range):
     r_min, r_max = color_range['r']
@@ -70,13 +65,11 @@ def detect_color_in_range(screenshot, color_range):
     )
 
     y, x = np.where(mask)
-    if not x.size or not y.size:
-        return None
-
-    avg_x = int(np.mean(x))
-    avg_y = int(np.mean(y))
-
-    return (avg_x, avg_y)
+    if x.size and y.size:
+        avg_x = int(np.mean(x))
+        avg_y = int(np.mean(y))
+        return avg_x, avg_y
+    return None
 
 def aim_at_target(target_pos, highres):
     highres_center_x = highres['width'] // 2
@@ -86,18 +79,12 @@ def aim_at_target(target_pos, highres):
     distance_x = target_x - highres_center_x
     distance_y = target_y - highres_center_y
 
-    offset_x = 0
-    offset_y = 53
-
-    distance_x += offset_x
-    distance_y += offset_y
-
-    if abs(distance_x) > 2 or abs(distance_y) > 2:  # Deadzone
+    if abs(distance_x) > 2 or abs(distance_y) > 2:
         smooth_move(distance_x, distance_y)
 
 def smooth_move(dx, dy, speed_factor=None):
     speed_factor = speed_factor or aimbot_speed
-    distance = np.sqrt(dx**2 + dy**2)
+    distance = np.sqrt(dx ** 2 + dy ** 2)
     if distance == 0:
         return
 
@@ -108,22 +95,3 @@ def smooth_move(dx, dy, speed_factor=None):
     for _ in range(num_steps):
         ctypes.windll.user32.mouse_event(0x0001, int(step_dx), int(step_dy), 0, 0)
         time.sleep(0.01 / speed_factor)
-
-def get_key_state(key_code):
-    return ctypes.windll.user32.GetAsyncKeyState(key_code)
-
-def main():
-    frame_rate = 900
-    interval = 1.0 / frame_rate
-
-    while True:
-        if get_key_state(VK_XBUTTON4) & 0x8000:
-            if not enabled:
-                toggle_aimbot(True)
-            time.sleep(0.1)  # Prevent rapid toggling
-        elif not (get_key_state(VK_XBUTTON4) & 0x8000) and enabled:
-            toggle_aimbot(False)
-        time.sleep(interval)
-
-if __name__ == "__main__":
-    main()
