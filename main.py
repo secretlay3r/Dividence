@@ -2,6 +2,8 @@ import keyboard
 import triggerbot
 import norecoil
 import aimbot
+import autoswap
+import bhop
 import winsound
 import dearpygui.dearpygui as dpg
 import json
@@ -21,8 +23,10 @@ triggerbot_toggled = False
 
 aimbot_on_hold = False
 triggerbot_on_hold = False
+aimbot_hold_key = "Mouse 2"
+triggerbot_hold_key = "Mouse 2"
 
-config_file = "config.json"
+aim_region = "body"
 
 keys = {
     'a': "A", 'b': "B", 'c': "C", 'd': "D", 'e': "E", 'f': "F", 'g': "G", 'h': "H", 'i': "I", 'j': "J", 'k': "K", 'l': "L", 'm': "M", 'n': "N", 'o': "O", 'p': "P", 'q': "Q", 'r': "R", 's': "S", 't': "T", 'u': "U", 'v': "V", 'w': "W", 'x': "X", 'y': "Y", 'z': "Z",
@@ -37,54 +41,62 @@ keys = {
     'numlock': "NUM LOCK"
 }
 
-def save_config():
-    config_data = {
-        "aimbot_speed": aimbot_speed,
-        "scan_area_size": scan_area_size,
-        "selected_resolution": selected_resolution,
-        "x_recoil_compensation": x_recoil_compensation,
-        "y_recoil_compensation": y_recoil_compensation,
-        "aimbot_toggle_keys": aimbot_toggle_keys,
-        "triggerbot_toggle_keys": triggerbot_toggle_keys,
+def save_config(filename="config.json"):
+    config = {
+        "resolution_combo": dpg.get_value("resolution_combo"),
+        "aimbot_speed_slider": dpg.get_value("aimbot_speed_slider"),
+        "aimbot_on_hold": dpg.get_value("aimbot_on_hold"),
+        "aimbot_hold_key_field": dpg.get_value("aimbot_hold_key_field"),
+        "aimbot_key_field": dpg.get_value("aimbot_key_field"),
+        "triggerbot_on_hold": dpg.get_value("triggerbot_on_hold"),
+        "triggerbot_hold_key_field": dpg.get_value("triggerbot_hold_key_field"),
+        "triggerbot_key_field": dpg.get_value("triggerbot_key_field"),
+        "scan_area_slider": dpg.get_value("scan_area_slider"),
+        "x_recoil_slider": dpg.get_value("x_recoil_slider"),
+        "y_recoil_slider": dpg.get_value("y_recoil_slider"),
+        "autoswap_checkbox": dpg.get_value("autoswap_checkbox"),
+        "bhop_checkbox": dpg.get_value("bhop_checkbox")
     }
-    with open(config_file, "w") as f:
-        json.dump(config_data, f)
-    print("Configuration saved.")
+    with open(filename, "w") as f:
+        json.dump(config, f, indent=4)
 
-def load_config():
-    global aimbot_speed, scan_area_size, selected_resolution, x_recoil_compensation, y_recoil_compensation
-    global aimbot_toggle_keys, triggerbot_toggle_keys
-
+def load_config(filename="config.json"):
     try:
-        with open(config_file, "r") as f:
-            config_data = json.load(f)
-
-        aimbot_speed = config_data.get("aimbot_speed", aimbot_speed)
-        scan_area_size = config_data.get("scan_area_size", scan_area_size)
-        selected_resolution = config_data.get("selected_resolution", selected_resolution)
-        x_recoil_compensation = config_data.get("x_recoil_compensation", x_recoil_compensation)
-        y_recoil_compensation = config_data.get("y_recoil_compensation", y_recoil_compensation)
-        aimbot_toggle_keys = config_data.get("aimbot_toggle_keys", aimbot_toggle_keys)
-        triggerbot_toggle_keys = config_data.get("triggerbot_toggle_keys", triggerbot_toggle_keys)
-
-        print(f"Config loaded: aimbot_speed={aimbot_speed}, scan_area_size={scan_area_size}, selected_resolution={selected_resolution}")
-        
-        dpg.set_value("aimbot_key_field", aimbot_toggle_keys[0])
-        dpg.set_value("triggerbot_key_field", triggerbot_toggle_keys[0])
-        dpg.set_value("aimbot_speed_slider", aimbot_speed)
-        dpg.set_value("scan_area_slider", scan_area_size)
-        dpg.set_value("x_recoil_slider", x_recoil_compensation)
-        dpg.set_value("y_recoil_slider", y_recoil_compensation)
-
-        if selected_resolution == "1920x1080":
-            dpg.set_value("resolution_combo", "1920x1080")
-        else:
-            dpg.set_value("resolution_combo", "1280x720")
-
-        print("Loaded config.")
+        with open(filename, "r") as f:
+            config = json.load(f)
+            
+            required_keys = [
+                "resolution_combo", "aimbot_speed_slider", "aimbot_on_hold",
+                "aimbot_hold_key_field", "aimbot_key_field", "triggerbot_on_hold",
+                "triggerbot_hold_key_field", "triggerbot_key_field", "scan_area_slider",
+                "x_recoil_slider", "y_recoil_slider", "autoswap_checkbox", "bhop_checkbox"
+            ]
+                        
+            for key, value in config.items():
+                if dpg.does_item_exist(key):
+                    try:
+                        if isinstance(value, bool):
+                            dpg.set_value(key, value)
+                        elif isinstance(value, str):
+                            if key.endswith("_combo") or key.endswith("_field"):
+                                dpg.set_value(key, value)
+                        elif isinstance(value, float):
+                            if key.endswith("_slider"):
+                                dpg.set_value(key, value)
+                    except Exception as e:
+                        pass
+                else:
+                    pass
+            
+            if "color_set_combo" in config:
+                set_color_range(config["color_set_combo"])
+            
+            dpg.set_value("aimbot_checkbox", dpg.get_value("aimbot_on_hold"))
+            dpg.set_value("triggerbot_checkbox", dpg.get_value("triggerbot_on_hold"))
+            
     except FileNotFoundError:
-        print("No config.json found!")
-
+        print("Config.json does not exist!")
+        
 def set_color_range(selected_color):
     triggerbot.set_target_colors([selected_color])
     aimbot.set_target_colors([selected_color])
@@ -95,9 +107,19 @@ def set_resolution(sender, app_data):
     if selected_resolution == "1920x1080":
         aimbot.set_monitor_resolution(1920, 1080)
         triggerbot.set_monitor_resolution(1920, 1080)
+        autoswap.set_monitor_resolution(1920, 1080)
     else:
         aimbot.set_monitor_resolution(1280, 720)
         triggerbot.set_monitor_resolution(1280, 720)
+        autoswap.set_monitor_resolution(1280, 720)
+
+def toggle_autoswap(sender, app_data):
+    if dpg.get_value(sender):
+        autoswap.toggle_autoswap(True)
+        winsound.Beep(1000, 200)
+    else:
+        autoswap.toggle_autoswap(False)
+        winsound.Beep(500, 200)
 
 def toggle_aimbot(sender, app_data):
     if dpg.get_value(sender):
@@ -107,7 +129,12 @@ def toggle_aimbot(sender, app_data):
         aimbot.toggle_aimbot(enable=False)
         winsound.Beep(500, 200)
 
-def set_aimbot_speed(sender, app_data):
+def set_aim_region(sender, app_data):
+    global aim_region
+    aim_region = app_data
+    aimbot.set_aim_region(aim_region)
+
+def set_aimbot_speed(sender, app_data=None):
     global aimbot_speed
     aimbot_speed = dpg.get_value(sender)
     aimbot.set_aimbot_speed(aimbot_speed)
@@ -150,9 +177,32 @@ def assign_key(field):
             global triggerbot_toggle_keys
             triggerbot_toggle_keys = [assigned_key]
             dpg.set_value("triggerbot_key_field", assigned_key)
+        elif field == "aimbot_hold":
+            global aimbot_hold_key
+            aimbot_hold_key = assigned_key
+            dpg.set_value("aimbot_hold_key_field", assigned_key)
+        elif field == "triggerbot_hold":
+            global triggerbot_hold_key
+            triggerbot_hold_key = assigned_key
+            dpg.set_value("triggerbot_hold_key_field", assigned_key)
+
+def reset_hold_key(field):
+    global aimbot_hold_key, triggerbot_hold_key
+    if field == "aimbot_hold":
+        aimbot_hold_key = "Mouse 2"
+        dpg.set_value("aimbot_hold_key_field", "Mouse 2")
+    elif field == "triggerbot_hold":
+        triggerbot_hold_key = "Mouse 2"
+        dpg.set_value("triggerbot_hold_key_field", "Mouse 2")
 
 def is_right_mouse_button_down():
     return ctypes.windll.user32.GetAsyncKeyState(0x02) != 0
+
+def is_key_held(key):
+    if key.lower() == "mouse 2":
+        return ctypes.windll.user32.GetAsyncKeyState(0x02) != 0
+    else:
+        return keyboard.is_pressed(key.lower())
 
 def check_toggle_keys():
     global aimbot_toggled, triggerbot_toggled
@@ -178,17 +228,20 @@ def check_toggle_keys():
     else:
         triggerbot_on_hold = False 
 
-    if is_right_mouse_button_down():
+    if is_key_held(aimbot_hold_key):
         if dpg.get_value("aimbot_on_hold") and not dpg.get_value("aimbot_checkbox"):
             dpg.set_value("aimbot_checkbox", True)
             aimbot.toggle_aimbot(True)
-        if dpg.get_value("triggerbot_on_hold") and not dpg.get_value("triggerbot_checkbox"):
-            dpg.set_value("triggerbot_checkbox", True)
-            triggerbot.toggle_triggerbot(True)
     else:
         if dpg.get_value("aimbot_on_hold") and dpg.get_value("aimbot_checkbox"):
             dpg.set_value("aimbot_checkbox", False)
             aimbot.toggle_aimbot(False)
+
+    if is_key_held(triggerbot_hold_key):
+        if dpg.get_value("triggerbot_on_hold") and not dpg.get_value("triggerbot_checkbox"):
+            dpg.set_value("triggerbot_checkbox", True)
+            triggerbot.toggle_triggerbot(True)
+    else:
         if dpg.get_value("triggerbot_on_hold") and dpg.get_value("triggerbot_checkbox"):
             dpg.set_value("triggerbot_checkbox", False)
             triggerbot.toggle_triggerbot(False)
@@ -217,27 +270,40 @@ with dpg.window(tag="primary_window"):
             dpg.add_combo(label="Monitor Resolution", items=["1280x720", "1920x1080"], callback=set_resolution, tag="resolution_combo")
             dpg.add_combo(label="Color Set", items=["ORANGE", "YELLOW", "PURPLE", "RED", "GREEN", "CYAN"], callback=lambda sender, app_data: set_color_range(app_data))
             with dpg.group(horizontal=True):
-                dpg.add_button(label="Save Config", callback=save_config)
-                dpg.add_button(label="Load Config", callback=load_config)
+                dpg.add_button(label="Save Config", callback=lambda: save_config())
+                dpg.add_button(label="Load Config", callback=lambda: load_config())
 
         with dpg.tab(label="Aimbot"):
             dpg.add_checkbox(label="Aimbot", callback=toggle_aimbot, tag="aimbot_checkbox")
-            dpg.add_checkbox(label="Hold-to-use (Mouse 2)", callback=lambda sender, app_data: dpg.set_value("aimbot_on_hold", app_data), tag="aimbot_on_hold")
+            dpg.add_combo(label="Aim Region", items=["body", "head", "hitscan"], callback=set_aim_region, tag="aim_region_combo")
             dpg.add_slider_float(label="Aimbot Speed", default_value=0.9, min_value=0.1, max_value=2.0, callback=set_aimbot_speed, tag="aimbot_speed_slider")
-            dpg.add_input_text(label="Aimbot Key", default_value="F1", readonly=True, tag="aimbot_key_field")
-            dpg.add_button(label="Set Aimbot Key", callback=lambda: assign_key("aimbot"))
+            dpg.add_checkbox(label="Hold-to-use", callback=lambda sender, app_data: dpg.set_value("aimbot_on_hold", app_data), tag="aimbot_on_hold")
+            dpg.add_input_text(label="Hold Key", default_value="Mouse 2", readonly=True, tag="aimbot_hold_key_field")
+            with dpg.group(horizontal=True):
+                dpg.add_button(label="Set Hold Key", callback=lambda: assign_key("aimbot_hold"))
+                dpg.add_button(label="Reset Hold Key", callback=lambda: reset_hold_key("aimbot_hold"))
+            dpg.add_input_text(label="Toggle Key", default_value="F1", readonly=True, tag="aimbot_key_field")
+            dpg.add_button(label="Set Toggle Key", callback=lambda: assign_key("aimbot"))
 
         with dpg.tab(label="Triggerbot"):
             dpg.add_checkbox(label="Triggerbot", callback=toggle_triggerbot, tag="triggerbot_checkbox")
-            dpg.add_checkbox(label="Hold-to-use (Mouse 2)", callback=lambda sender, app_data: dpg.set_value("triggerbot_on_hold", app_data), tag="triggerbot_on_hold")
-            dpg.add_slider_float(label="Scan Area", default_value=20, min_value=10, max_value=200, callback=set_scan_area, tag="scan_area_slider")
-            dpg.add_input_text(label="Triggerbot Key", default_value="F2", readonly=True, tag="triggerbot_key_field")
-            dpg.add_button(label="Set Triggerbot Key", callback=lambda: assign_key("triggerbot"))
+            dpg.add_slider_float(label="Scan Area", default_value=15, min_value=10, max_value=200, callback=set_scan_area, tag="scan_area_slider")
+            dpg.add_checkbox(label="Hold-to-use", callback=lambda sender, app_data: dpg.set_value("triggerbot_on_hold", app_data), tag="triggerbot_on_hold")
+            dpg.add_input_text(label="Hold Key", default_value="Mouse 2", readonly=True, tag="triggerbot_hold_key_field")
+            with dpg.group(horizontal=True):
+                dpg.add_button(label="Set Hold Key", callback=lambda: assign_key("triggerbot_hold"))
+                dpg.add_button(label="Reset Hold Key", callback=lambda: reset_hold_key("triggerbot_hold"))
+            dpg.add_input_text(label="Toggle Key", default_value="F2", readonly=True, tag="triggerbot_key_field")
+            dpg.add_button(label="Set Toggle Key", callback=lambda: assign_key("triggerbot"))
 
         with dpg.tab(label="NoRecoil"):
             dpg.add_checkbox(label="Recoil Compensation", callback=toggle_norecoil)
             dpg.add_slider_float(label="X-Axis Recoil", default_value=2.0, min_value=0, max_value=10, callback=set_x_recoil, tag="x_recoil_slider")
             dpg.add_slider_float(label="Y-Axis Recoil", default_value=2.0, min_value=0, max_value=10, callback=set_y_recoil, tag="y_recoil_slider")
+
+        with dpg.tab(label="Misc"):
+            dpg.add_checkbox(label="Auto swap to spectre", callback=toggle_autoswap, tag="autoswap_checkbox")
+            dpg.add_checkbox(label="Bunny Hop", callback=lambda sender, app_data: bhop.toggle_bhop(app_data), tag="bhop_checkbox")
 
 dpg.create_viewport(title='Dividence', width=510, height=370)
 dpg.setup_dearpygui()
