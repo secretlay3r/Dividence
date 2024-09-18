@@ -9,8 +9,8 @@ import random
 pyautogui.FAILSAFE = False
 enabled = False
 target_colors = []
-scan_area_size = 20
-monitor_resolution = (1920, 1080)  # Default resolution
+scan_area_size = 15
+monitor_resolution = (1920, 1080)
 
 color_ranges = {
     "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},
