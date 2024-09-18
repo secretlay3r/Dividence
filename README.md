@@ -11,16 +11,13 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 
 [UnknownCheats link](https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html)
 
-**TODO:**
-- Add different screen resoultion support
-- Add better aimbot correction when moving
-- and more
-  
 ## Features
 
-- Color-based Aimbot
-- Color-based Triggerbot
-- No-Recoil
+- Color aimbot
+- Color triggerbot
+- No recoil
+- Auto swap to spectre when it alerts you
+- Bunny hop
 - Config system
   
 ![Untitled](https://github.com/user-attachments/assets/a3aaa417-735b-492d-b4f0-7318b32e0380)
