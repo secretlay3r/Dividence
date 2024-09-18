@@ -68,7 +68,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
    then, run
    
    ```bash
-   pyinstaller --onefile --name Dividence main.py norecoil.py aimbot.py triggerbot.py
+   pyinstaller --onefile main.py norecoil.py aimbot.py triggerbot.py autoswap.py bhop.py
    ```
 
   [![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
