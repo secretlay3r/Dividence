@@ -20,7 +20,8 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 - Bunny hop
 - Config system
   
-![Untitled](https://github.com/user-attachments/assets/a3aaa417-735b-492d-b4f0-7318b32e0380)
+![123](https://github.com/user-attachments/assets/abc4c5ed-34dd-4e7b-8bf4-10d381e6b3e7)
+
 
 ## How to install
 1. **Install Python**
