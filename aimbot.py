@@ -3,14 +3,16 @@ import mss
 import numpy as np
 import ctypes
 import threading
+import random
 
 VK_XBUTTON4 = 0x05
 enabled = False
 target_colors = []
 aimbot_speed = 0.9
-monitor_resolution = (1920, 1080)  # Default resolution
+monitor_resolution = (1920, 1080)
 
-# Color ranges for detection
+aim_region = "body"
+
 color_ranges = {
     "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},
     "YELLOW": {'r': (78, 133), 'g': (237, 255), 'b': (237, 255)},
@@ -19,6 +21,10 @@ color_ranges = {
     "GREEN": {'r': (30, 97), 'g': (240, 255), 'b': (30, 110)},
     "CYAN": {'r': (246, 255), 'g': (246, 255), 'b': (66, 100)},
 }
+
+def set_aim_region(region):
+    global aim_region
+    aim_region = region
 
 def set_monitor_resolution(width, height):
     global monitor_resolution
@@ -73,7 +79,13 @@ def detect_color_in_range(screenshot, color_range):
 
 def aim_at_target(target_pos, highres):
     highres_center_x = highres['width'] // 2
-    highres_center_y = highres['height'] // 2
+    
+    if aim_region == "body":
+        highres_center_y = highres['height'] // 2
+    elif aim_region == "head":
+        highres_center_y = highres['height'] // 1.75
+    elif aim_region == "hitscan":
+        highres_center_y = highres['height'] // random.uniform(1.75, 2)
 
     target_x, target_y = target_pos
     distance_x = target_x - highres_center_x
