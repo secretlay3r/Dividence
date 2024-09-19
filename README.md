@@ -59,7 +59,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
    
 ## Obfuscating
  
-To obfuscate the files using pyarmor, install it first:
+6. To obfuscate the files using pyarmor, install it first:
 
 ```bash
 pip install pyarmor
