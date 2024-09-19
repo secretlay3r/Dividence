@@ -68,6 +68,33 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
    ```bash
    pyinstaller --onefile main.py norecoil.py aimbot.py triggerbot.py autoswap.py bhop.py
    ```
+   
+## Obfuscating
+ 
+To obfuscate the files using pyarmor, install it first:
+
+```bash
+pip install pyarmor
+```
+
+Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following commands:
+```bash
+pyarmor cfg
+```
+
+to create config, then run
+
+```bash
+pyarmor reg
+```
+
+then run
+
+```bash
+pyarmor gen main.py norecoil.py aimbot.py triggerbot.py autoswap.py bhop.py
+```
+
+Now you should have obfuscated files in the dist folder.
 
   [![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
   [![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/secretlay3r/Dividence-for-Spectre-Divide)](/../../commits/)
