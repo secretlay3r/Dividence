@@ -54,19 +54,6 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 
    ```bash
    pip install dearpygui mss numpy pywin32 pyautogui keyboard
-6. **Compiling**
-
-   I highly recommend obfuscating the .exe as it can be detected, but here are the basic compilation instructions.
-   Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following command to compile all files to exe:
-
-   ```bash
-   pip install pyinstaller
-   ```
-
-   then, run
-   
-   ```bash
-   pyinstaller --onefile main.py norecoil.py aimbot.py triggerbot.py autoswap.py bhop.py
    ```
    
 ## Obfuscating
@@ -79,22 +66,9 @@ pip install pyarmor
 
 Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following commands:
 ```bash
-pyarmor cfg
+pyarmor gen --pack onefile main.py
 ```
-
-to create config, then run
-
-```bash
-pyarmor reg
-```
-
-then run
-
-```bash
-pyarmor gen main.py norecoil.py aimbot.py triggerbot.py autoswap.py bhop.py
-```
-
-Now you should have obfuscated files in the dist folder.
+Now you should have obfuscated main.exe in the dist folder, rename it and use.
 
   [![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
   [![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/secretlay3r/Dividence-for-Spectre-Divide)](/../../commits/)
