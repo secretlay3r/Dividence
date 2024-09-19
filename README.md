@@ -39,6 +39,7 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 3. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated!)**
 
 ## How to compile
+
 1. **Download the repository**  
 
    Download the repository to your PC.
@@ -64,7 +65,7 @@ To obfuscate the files using pyarmor, install it first:
 pip install pyarmor
 ```
 
-Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following commands:
+Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following command:
 ```bash
 pyarmor gen --pack onefile main.py
 ```
