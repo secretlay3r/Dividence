@@ -3,11 +3,13 @@
 
 **Visual cheat done for research purposes.**
 
-Currently works only on 1920x1080 (best option) and 1280x720 game resolution!
+**Supported Resolutions:**
 
-Config must be in the same folder as the exe to make it work!
+  - 1920x1080 (Best)
+  
+  - 1280x720
 
-This project includes features such as no-recoil, aimbot and triggerbot built using Python and DearPyGui.
+Saved config.json must be in the same folder as the exe to make it work!
 
 [UnknownCheats link](https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html)
 
@@ -27,37 +29,18 @@ This project includes features such as no-recoil, aimbot and triggerbot built us
 1. **Install Python**
    
    Make sure Python is installed. You can download it from [python.org](https://www.python.org/downloads/).  
-   During installation, check the box to "Add Python to PATH".
+   Be sure to check the box that says "Add Python to PATH" during installation.
    
 2. **Install Dependencies**
    
-   Open a command prompt and run the following command to install the required dependencies:
+   Open a terminal or command prompt, then run the following command to install dependencies:
 
    ```bash
    pip install dearpygui mss numpy pywin32 pyautogui keyboard
    
-3. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated!)**
+3. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated so it's not safe to use!)**
 
-## How to compile
-
-1. **Download the repository**  
-
-   Download the repository to your PC.
-
-3. **Install Python**
-   
-   Make sure Python is installed. You can download it from [python.org](https://www.python.org/downloads/).  
-   During installation, check the box to "Add Python to PATH".
-
-5. **Install Dependencies**
-   
-   Open a command prompt and run the following command to install the required dependencies:
-
-   ```bash
-   pip install dearpygui mss numpy pywin32 pyautogui keyboard
-   ```
-   
-## Obfuscating
+## Obfuscating and compiling
  
 To obfuscate the files using pyarmor, install it first:
 
