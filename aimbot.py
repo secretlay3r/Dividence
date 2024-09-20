@@ -83,7 +83,7 @@ def aim_at_target(target_pos, highres):
     if aim_region == "body":
         highres_center_y = highres['height'] // 2
     elif aim_region == "head":
-        highres_center_y = highres['height'] // 1.75
+        highres_center_y = highres['height'] // 1.85
     elif aim_region == "hitscan":
         highres_center_y = highres['height'] // random.uniform(1.75, 2)
 
