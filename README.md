@@ -36,7 +36,7 @@ Saved config.json must be in the same folder as the exe to make it work!
    Open a terminal or command prompt, then run the following command to install dependencies:
 
    ```bash
-   pip install dearpygui mss numpy pywin32 pyautogui keyboard
+   pip install dearpygui mss numpy pywin32 pyautogui keyboard opencv-python
    
 3. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated so it's not safe to use!)**
 
