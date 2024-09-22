@@ -45,7 +45,7 @@ Saved config.json must be in the same folder as the exe to make it work!
 To obfuscate the files using pyarmor, install it first:
 
 ```bash
-pip install pyarmor
+pip install pyinstaller pyarmor
 ```
 
 Open a command prompt IN DIRECTORY WITH ALL SCRIPTS and run the following command:
