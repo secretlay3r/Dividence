@@ -9,6 +9,7 @@ import dearpygui.dearpygui as dpg
 import json
 import ctypes
 
+aimbot_fov = 75
 aimbot_speed = 0.9
 scan_area_size = 20
 selected_resolution = "1920x1080"
@@ -17,14 +18,17 @@ y_recoil_compensation = 2.0
 
 aimbot_toggle_keys = ["F1"]
 triggerbot_toggle_keys = ["F2"]
+norecoil_toggle_keys = ["F3"]
 
 aimbot_toggled = False
 triggerbot_toggled = False
+norecoil_toggled = False
 
 aimbot_on_hold = False
 triggerbot_on_hold = False
 aimbot_hold_key = "Mouse 2"
 triggerbot_hold_key = "Mouse 2"
+norecoil_hold_key = "Mouse 2"
 
 aim_region = "body"
 
@@ -139,6 +143,11 @@ def set_aimbot_speed(sender, app_data=None):
     aimbot_speed = dpg.get_value(sender)
     aimbot.set_aimbot_speed(aimbot_speed)
 
+def set_aimbot_fov(sender, app_data):
+    global aimbot_fov
+    aimbot_fov = dpg.get_value(sender)
+    aimbot.set_aimbot_fov(aimbot_fov)
+
 def toggle_triggerbot(sender, app_data):
     if dpg.get_value(sender):
         triggerbot.toggle_triggerbot(enable=True)
@@ -205,8 +214,8 @@ def is_key_held(key):
         return keyboard.is_pressed(key.lower())
 
 def check_toggle_keys():
-    global aimbot_toggled, triggerbot_toggled
-    global aimbot_on_hold, triggerbot_on_hold
+    global aimbot_toggled, triggerbot_toggled, norecoil_toggled
+    global aimbot_on_hold, triggerbot_on_hold, norecoil_on_hold
 
     if keyboard.is_pressed(aimbot_toggle_keys[0]):
         if not aimbot_on_hold:
@@ -228,6 +237,16 @@ def check_toggle_keys():
     else:
         triggerbot_on_hold = False 
 
+    if keyboard.is_pressed(norecoil_toggle_keys[0]):
+        if not norecoil_on_hold:
+            norecoil_toggled = not norecoil_toggled
+            dpg.set_value("norecoil_checkbox", norecoil_toggled)
+            norecoil.toggle_norecoil()
+            winsound.Beep(1000 if norecoil_toggled else 500, 200)
+            norecoil_on_hold = True
+    else:
+        norecoil_on_hold = False
+
     if is_key_held(aimbot_hold_key):
         if dpg.get_value("aimbot_on_hold") and not dpg.get_value("aimbot_checkbox"):
             dpg.set_value("aimbot_checkbox", True)
@@ -245,6 +264,15 @@ def check_toggle_keys():
         if dpg.get_value("triggerbot_on_hold") and dpg.get_value("triggerbot_checkbox"):
             dpg.set_value("triggerbot_checkbox", False)
             triggerbot.toggle_triggerbot(False)
+
+    if is_key_held(norecoil_hold_key):
+        if dpg.get_value("norecoil_on_hold") and not dpg.get_value("norecoil_checkbox"):
+            dpg.set_value("norecoil_checkbox", True)
+            norecoil.toggle_norecoil()
+    else:
+        if dpg.get_value("norecoil_on_hold") and dpg.get_value("norecoil_checkbox"):
+            dpg.set_value("norecoil_checkbox", False)
+            norecoil.toggle_norecoil()
 
 def apply_custom_theme():
     with dpg.theme() as theme:
@@ -277,6 +305,10 @@ with dpg.window(tag="primary_window"):
             dpg.add_checkbox(label="Aimbot", callback=toggle_aimbot, tag="aimbot_checkbox")
             dpg.add_combo(label="Aim Region", items=["body", "head", "hitscan"], callback=set_aim_region, tag="aim_region_combo")
             dpg.add_slider_float(label="Aimbot Speed", default_value=0.9, min_value=0.1, max_value=2.0, callback=set_aimbot_speed, tag="aimbot_speed_slider")
+            
+            # New FOV slider
+            dpg.add_slider_float(label="Aimbot FOV", default_value=75, min_value=50, max_value=200, callback=set_aimbot_fov, tag="aimbot_fov_slider")
+            
             dpg.add_checkbox(label="Hold-to-use", callback=lambda sender, app_data: dpg.set_value("aimbot_on_hold", app_data), tag="aimbot_on_hold")
             dpg.add_input_text(label="Hold Key", default_value="Mouse 2", readonly=True, tag="aimbot_hold_key_field")
             with dpg.group(horizontal=True):
@@ -297,9 +329,12 @@ with dpg.window(tag="primary_window"):
             dpg.add_button(label="Set Toggle Key", callback=lambda: assign_key("triggerbot"))
 
         with dpg.tab(label="NoRecoil"):
-            dpg.add_checkbox(label="Recoil Compensation", callback=toggle_norecoil)
+            dpg.add_checkbox(label="NoRecoil", callback=toggle_norecoil, tag="norecoil_checkbox")
             dpg.add_slider_float(label="X-Axis Recoil", default_value=2.0, min_value=0, max_value=10, callback=set_x_recoil, tag="x_recoil_slider")
             dpg.add_slider_float(label="Y-Axis Recoil", default_value=2.0, min_value=0, max_value=10, callback=set_y_recoil, tag="y_recoil_slider")
+            dpg.add_checkbox(label="Hold-to-use", callback=lambda sender, app_data: dpg.set_value("norecoil_on_hold", app_data), tag="norecoil_on_hold")
+            dpg.add_input_text(label="Hold Key", default_value="Mouse 2", readonly=True, tag="norecoil_hold_key_field")
+            dpg.add_input_text(label="Toggle Key", default_value="F3", readonly=True, tag="norecoil_key_field")
 
         with dpg.tab(label="Misc"):
             dpg.add_checkbox(label="Auto swap to spectre", callback=toggle_autoswap, tag="autoswap_checkbox")
