@@ -10,7 +10,7 @@ enabled = False
 target_colors = []
 aimbot_speed = 0.9
 monitor_resolution = (1920, 1080)
-
+aimbot_fov = 75
 aim_region = "body"
 
 color_ranges = {
@@ -55,9 +55,19 @@ def run_aimbot():
                 aim_at_target(target_pos, highres_region)
         time.sleep(0.001)
 
+def set_aimbot_fov(fov):
+    global aimbot_fov
+    aimbot_fov = fov
+
 def get_highres_region():
     width, height = monitor_resolution
-    return {"top": height // 2 - 200, "left": width // 2 - 200, "width": 400, "height": 400}
+    region_size = aimbot_fov * 2
+    return {
+        "top": int(height // 2 - region_size // 2),
+        "left": int(width // 2 - region_size // 2),
+        "width": int(region_size),
+        "height": int(region_size)
+    }
 
 def detect_color_in_range(screenshot, color_range):
     r_min, r_max = color_range['r']
