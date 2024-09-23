@@ -9,7 +9,7 @@ import cv2
 enabled = False
 monitor_resolution = (1920, 1080)
 top_monitor_height = 100
-scan_area_width = monitor_resolution[0]
+scan_area_width = int(monitor_resolution[0] * 0.5)
 
 target_color_range = {
     "r": (60, 75),
@@ -76,4 +76,4 @@ def detect_target_color(screenshot):
 
 def press_x():
     keyboard.press_and_release('x')
-    time.sleep(5)
+    time.sleep(4)
