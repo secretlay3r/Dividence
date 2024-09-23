@@ -1,37 +1,119 @@
 import time
-import win32api
-import random
+import mss
+import numpy as np
 import ctypes
 import threading
+import random
 
-horizontal_range = 2
-vertical_range = 2
-downward_range = 4
-compensation_interval = 0.03
+VK_XBUTTON4 = 0x05
 enabled = False
+target_colors = []
+aimbot_speed = 0.9
+monitor_resolution = (1920, 1080)
+aimbot_fov = 75
+aim_region = "body"
 
-def is_mouse_down():
-    lmb_state = win32api.GetKeyState(0x01)
-    return lmb_state < 0
+color_ranges = {
+    "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},
+    "YELLOW": {'r': (78, 133), 'g': (237, 255), 'b': (237, 255)},
+    "PURPLE": {'r': (144, 255), 'g': (60, 99), 'b': (194, 255)},
+    "RED": {'r': (80, 135), 'g': (100, 130), 'b': (247, 255)},
+    "GREEN": {'r': (30, 97), 'g': (240, 255), 'b': (30, 110)},
+    "CYAN": {'r': (246, 255), 'g': (246, 255), 'b': (66, 100)},
+}
 
-def toggle_norecoil():
+def set_aim_region(region):
+    global aim_region
+    aim_region = region
+
+def set_monitor_resolution(width, height):
+    global monitor_resolution
+    monitor_resolution = (width, height)
+
+def set_target_colors(selected_colors):
+    global target_colors
+    target_colors = [color_ranges[color] for color in selected_colors]
+
+def set_aimbot_speed(speed):
+    global aimbot_speed
+    aimbot_speed = speed
+
+def toggle_aimbot(enable):
     global enabled
-    enabled = not enabled
+    enabled = enable
     if enabled:
-        threading.Thread(target=start_norecoil_loop, daemon=True).start()
+        threading.Thread(target=run_aimbot, daemon=True).start()
 
-def start_norecoil_loop():
+def run_aimbot():
+    sct = mss.mss()
+    highres_region = get_highres_region()
     while enabled:
-        if is_mouse_down():
-            while is_mouse_down():
-                apply_recoil_compensation()
-                time.sleep(compensation_interval)
-            time.sleep(0.001)
-        else:
-            time.sleep(0.01)
+        screenshot = np.array(sct.grab(highres_region))
+        for color_range in target_colors:
+            target_pos = detect_color_in_range(screenshot, color_range)
+            if target_pos:
+                aim_at_target(target_pos, highres_region)
+        time.sleep(0.001)
 
-def apply_recoil_compensation():
-    horizontal_offset = random.uniform(-horizontal_range, horizontal_range)
-    vertical_offset = random.uniform(-vertical_range, vertical_range) + downward_range
+def set_aimbot_fov(fov):
+    global aimbot_fov
+    aimbot_fov = fov
 
-    ctypes.windll.user32.mouse_event(0x0001, int(horizontal_offset), int(vertical_offset), 0, 0)
+def get_highres_region():
+    width, height = monitor_resolution
+    region_size = aimbot_fov * 2
+    return {
+        "top": int(height // 2 - region_size // 2),
+        "left": int(width // 2 - region_size // 2),
+        "width": int(region_size),
+        "height": int(region_size)
+    }
+
+def detect_color_in_range(screenshot, color_range):
+    r_min, r_max = color_range['r']
+    g_min, g_max = color_range['g']
+    b_min, b_max = color_range['b']
+
+    mask = (
+        (screenshot[:, :, 0] >= r_min) & (screenshot[:, :, 0] <= r_max) &
+        (screenshot[:, :, 1] >= g_min) & (screenshot[:, :, 1] <= g_max) &
+        (screenshot[:, :, 2] >= b_min) & (screenshot[:, :, 2] <= b_max)
+    )
+
+    y, x = np.where(mask)
+    if x.size and y.size:
+        avg_x = int(np.mean(x))
+        avg_y = int(np.mean(y))
+        return avg_x, avg_y
+    return None
+
+def aim_at_target(target_pos, highres):
+    highres_center_x = highres['width'] // 2
+    
+    if aim_region == "body":
+        highres_center_y = highres['height'] // 2
+    elif aim_region == "head":
+        highres_center_y = highres['height'] // 1.85
+    elif aim_region == "hitscan":
+        highres_center_y = highres['height'] // random.uniform(1.75, 2)
+
+    target_x, target_y = target_pos
+    distance_x = target_x - highres_center_x
+    distance_y = target_y - highres_center_y
+
+    if abs(distance_x) > 2 or abs(distance_y) > 2:
+        smooth_move(distance_x, distance_y)
+
+def smooth_move(dx, dy, speed_factor=None):
+    speed_factor = speed_factor or aimbot_speed
+    distance = np.sqrt(dx ** 2 + dy ** 2)
+    if distance == 0:
+        return
+
+    step_size = max(1, distance / 10) * speed_factor
+    num_steps = int(distance / step_size) + 1
+    step_dx, step_dy = dx / num_steps, dy / num_steps
+
+    for _ in range(num_steps):
+        ctypes.windll.user32.mouse_event(0x0001, int(step_dx), int(step_dy), 0, 0)
+        time.sleep(0.01 / speed_factor)
