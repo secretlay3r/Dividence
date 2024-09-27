@@ -22,8 +22,12 @@ Saved config.json must be in the same folder as the exe to make it work!
 - Bunny hop
 - Config system
   
-![123](https://github.com/user-attachments/assets/abc4c5ed-34dd-4e7b-8bf4-10d381e6b3e7)
+![preview](https://github.com/user-attachments/assets/b4ce2a29-7950-4c02-898a-27d38d9a6c15)
 
+**TODO:**
+- Better aimbot with Plain/Smooth/Silent settings
+- Fix FOV to work always in game
+- etc. I forgor to mention
 
 ## How to install
 1. **Install Python**
@@ -36,7 +40,7 @@ Saved config.json must be in the same folder as the exe to make it work!
    Open a terminal or command prompt, then run the following command to install dependencies:
 
    ```bash
-   pip install dearpygui mss numpy pywin32 pyautogui keyboard opencv-python
+   pip install dearpygui mss numpy pywin32 pyautogui keyboard opencv-python pynput
    
 3. **Navigate to [releases](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases) and download latest version (it's not obfuscated so it's not safe to use!)**
 
