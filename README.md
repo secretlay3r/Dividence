@@ -3,20 +3,22 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/discord/1284573063442071703?style=for-the-badge&logo=discord&logoColor=white&logoSize=auto&label=Discord&color=5865f2">
+  <a href="https://discord.gg/DnaNjHx7an">
+    <img src="https://img.shields.io/discord/1284573063442071703?style=for-the-badge&logo=discord&logoColor=white&logoSize=auto&label=Discord&color=5865f2" alt="Join our Discord server">
+  </a>
 </p>
 
 <p align="center">
   <a href="https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html">UnknownCheats thread</a>
 </p>
 
-Visual cheat done for research purposes.
+**Visual cheat done for research purposes.**
 
 **Supported Resolutions:**
 - 1920x1080
 - 1280x720
 
-Note: The config.json file must be in the same folder as the executable for it to work!
+Note: The `config.json` file must be in the same folder as the executable for it to work!
 
 **Features:**
 - Color aimbot
@@ -53,7 +55,7 @@ Open a command prompt in the directory with all scripts and run:
 pyarmor gen --pack onefile main.py
 ```
 
-Rename the resulting dist/main.exe file and use it.
+Rename the resulting `dist/main.exe` file and use it.
 
 ---
 
