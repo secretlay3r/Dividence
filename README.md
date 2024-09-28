@@ -32,7 +32,7 @@ Note: The `config.json` file must be in the same folder as the executable for it
 
 ## Quick Installation (Recommended)
 
-Run `build.bat` and it will make all the work for you.
+Run `build.bat` and it will make all the work for you. (Ensure that Python is installed and added to your system's PATH beforehand.)
 
 ## Manual Installation
 
