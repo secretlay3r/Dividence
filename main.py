@@ -427,7 +427,7 @@ def main():
                     dpg.add_button(label="Save Config", callback=lambda: save_config())
                     dpg.add_button(label="Load Config", callback=lambda: load_config())
                     
-                dpg.add_text("Dividence v2.7 by secretlay3r", pos=(155, 260))
+                dpg.add_text("Dividence v2.8 by secretlay3r", pos=(155, 260))
                 dpg.add_text("and community <3", pos=(200, 280))
 
             with dpg.tab(label="Aimbot"):
