@@ -1,5 +1,6 @@
 import ctypes
 import json
+import os
 import winsound
 from pynput import keyboard as pynput_keyboard
 from pynput import mouse as pynput_mouse
@@ -69,7 +70,6 @@ def save_config(filename="config.json"):
     try:
         config = {
             "resolution_combo": dpg.get_value("resolution_combo"),
-            "aimbot_speed_slider": dpg.get_value("aimbot_speed_slider"),
             "aimbot_on_hold": dpg.get_value("aimbot_on_hold"),
             "aimbot_hold_key_field": dpg.get_value("aimbot_hold_key_field"),
             "aimbot_key_field": dpg.get_value("aimbot_key_field"),
@@ -87,9 +87,9 @@ def save_config(filename="config.json"):
             "norecoil_hold_key_field": dpg.get_value("norecoil_hold_key_field"),
             "norecoil_key_field": dpg.get_value("norecoil_key_field"),
             "aimbot_fov_circle_visible": dpg.get_value("aimbot_fov_circle_checkbox"),
-            "aimbot_fov_circle_color": dpg.get_value("aimbot_fov_color_picker"),
+            "aimbot_fov_color": dpg.get_value("aimbot_fov_color_picker"),
             "triggerbot_fov_circle_visible": dpg.get_value("triggerbot_fov_circle_checkbox"),
-            "triggerbot_fov_circle_color": dpg.get_value("triggerbot_fov_color_picker"),
+            "triggerbot_fov_color": dpg.get_value("triggerbot_fov_color_picker"),
         }
         with open(filename, "w") as f:
             json.dump(config, f, indent=4)
@@ -97,53 +97,52 @@ def save_config(filename="config.json"):
     except Exception as e:
         print(f"Error saving configuration: {e}")
 
-
 def load_config(filename="config.json"):
     try:
+        if not os.path.exists(filename):
+            print(f"Config file does not exist. Creating new config.")
+            return
+
         with open(filename, "r") as f:
             config = json.load(f)
 
-            for key, value in config.items():
-                if dpg.does_item_exist(key):
-                    dpg.set_value(key, value)
+        aimbot_color = config["aimbot_fov_color"]
+        triggerbot_color = config["triggerbot_fov_color"]
 
-            if "color_set_combo" in config:
-                set_color_range(config["color_set_combo"])
-                
-            if "aimbot_fov_circle_color" in config:
-                color = config["aimbot_fov_circle_color"]
-                dpg.set_value("aimbot_fov_color_picker", color)
-                on_aimbot_fov_color_change(None, color)
+        dpg.set_value("resolution_combo", config["resolution_combo"])
+        dpg.set_value("aimbot_on_hold", config["aimbot_on_hold"])
+        dpg.set_value("aimbot_hold_key_field", config["aimbot_hold_key_field"])
+        dpg.set_value("aimbot_key_field", config["aimbot_key_field"])
+        dpg.set_value("triggerbot_on_hold", config["triggerbot_on_hold"])
+        dpg.set_value("triggerbot_hold_key_field", config["triggerbot_hold_key_field"])
+        dpg.set_value("triggerbot_key_field", config["triggerbot_key_field"])
+        dpg.set_value("scan_area_slider", config["scan_area_slider"])
+        dpg.set_value("x_recoil_slider", config["x_recoil_slider"])
+        dpg.set_value("y_recoil_slider", config["y_recoil_slider"])
+        dpg.set_value("autoswap_checkbox", config["autoswap_checkbox"])
+        dpg.set_value("bhop_checkbox", config["bhop_checkbox"])
+        dpg.set_value("aim_region_combo", config["aim_region_combo"])
+        dpg.set_value("aimbot_fov_slider", config["aimbot_fov_slider"])
+        dpg.set_value("norecoil_on_hold", config["norecoil_on_hold"])
+        dpg.set_value("norecoil_hold_key_field", config["norecoil_hold_key_field"])
+        dpg.set_value("norecoil_key_field", config["norecoil_key_field"])
 
-            if "triggerbot_fov_circle_color" in config:
-                color = config["triggerbot_fov_circle_color"]
-                dpg.set_value("triggerbot_fov_color_picker", color)
-                on_triggerbot_fov_color_change(None, color)
-                
-            if "aimbot_fov_circle_visible" in config:
-                visible = config["aimbot_fov_circle_visible"]
-                overlay.set_aimbot_fov_visible(visible)
-                dpg.configure_item("aimbot_fov_color_field", show=visible)
+        dpg.configure_item("aimbot_fov_circle_checkbox", show=config["aimbot_fov_circle_visible"])
+        dpg.configure_item("triggerbot_fov_circle_checkbox", show=config["triggerbot_fov_circle_visible"])
 
-            if "triggerbot_fov_circle_visible" in config:
-                visible = config["triggerbot_fov_circle_visible"]
-                overlay.set_triggerbot_fov_visible(visible)
-                dpg.configure_item("triggerbot_fov_color_field", show=visible)
+        dpg.set_value("aimbot_fov_color_picker", aimbot_color)
+        dpg.set_value("triggerbot_fov_color_picker", triggerbot_color)
 
+        set_aimbot_speed()
+        set_aimbot_fov()
+        set_scan_area()
+        set_x_recoil()
+        set_y_recoil()
+        set_aim_region(None, dpg.get_value("aim_region_combo"))
 
-            set_aimbot_speed()
-            set_aimbot_fov()
-            set_scan_area()
-            set_x_recoil()
-            set_y_recoil()
-            set_aim_region(None, dpg.get_value("aim_region_combo"))
-
-            print(f"Config {filename} loaded!")
-
+        print(f"Your config.json loaded!")
     except FileNotFoundError:
-        print(f"Config {filename} does not exist.")
-    except Exception as e:
-        print(f"Error: {e}")
+        print(f"Looks like config.json does not exist!")
 
 def set_color_range(selected_color):
     triggerbot.set_target_colors([selected_color])
@@ -184,6 +183,16 @@ def set_aimbot_fov(sender=None, app_data=None):
     aimbot.set_aimbot_fov(aimbot_fov)
     overlay.set_aimbot_fov(aimbot_fov)
 
+def set_aimbot_mode(sender, app_data):
+    global aimbot_smooth_mode
+    aimbot_smooth_mode = app_data == "smooth"
+    aimbot.set_aimbot_mode(aimbot_smooth_mode)
+    
+    if aimbot_smooth_mode:
+        aimbot.set_aimbot_speed(0.9)
+    else:
+        aimbot.set_aimbot_speed(2)
+
 def set_scan_area(sender=None, app_data=None):
     global scan_area_size
     scan_area_size = dpg.get_value("scan_area_slider")
@@ -223,10 +232,7 @@ def is_key_pressed(key_name):
     state = ctypes.windll.user32.GetAsyncKeyState(vk_code)
     return (state & 0x8000) != 0
 
-
 def assign_key(field):
-    print("Press a key or mouse button...")
-
     assigned_key = None
 
     mouse_button_mapping = {
@@ -379,7 +385,6 @@ def on_triggerbot_fov_circle_toggle(sender, app_data):
 def open_color_picker(popup_tag):
     dpg.configure_item(popup_tag, show=True)
 
-
 def create_color_button_theme(color):
     with dpg.theme() as color_theme:
         with dpg.theme_component(dpg.mvButton):
@@ -387,7 +392,6 @@ def create_color_button_theme(color):
             dpg.add_theme_color(dpg.mvThemeCol_ButtonHovered, color, category=dpg.mvThemeCat_Core)
             dpg.add_theme_color(dpg.mvThemeCol_ButtonActive, color, category=dpg.mvThemeCat_Core)
     return color_theme
-
 
 def on_aimbot_fov_color_change(sender, app_data):
     color = [int(c * 255) for c in app_data[:3]]
@@ -398,7 +402,6 @@ def on_aimbot_fov_color_change(sender, app_data):
     overlay.set_aimbot_fov_color(color)
     overlay.update()
 
-
 def on_triggerbot_fov_color_change(sender, app_data):
     color = [int(c * 255) for c in app_data[:3]]
 
@@ -407,7 +410,6 @@ def on_triggerbot_fov_color_change(sender, app_data):
 
     overlay.set_triggerbot_fov_color(color)
     overlay.update()
-
 
 def main():
     dpg.create_context()
@@ -432,9 +434,10 @@ def main():
                 dpg.add_checkbox(label="Enable Aimbot", callback=toggle_aimbot, tag="aimbot_checkbox")
                 
                 with dpg.group(horizontal=False):
+                    dpg.add_combo(label="Aimbot Mode", items=["smooth", "plain"], callback=set_aimbot_mode, tag="aimbot_mode_combo")
                     dpg.add_checkbox(label="Show Aimbot FOV Circle", tag="aimbot_fov_circle_checkbox", callback=on_aimbot_fov_circle_toggle)
                     dpg.add_button(tag="aimbot_fov_color_field", label="", width=50, height=20, show=False, callback=lambda: open_color_picker("aimbot_fov_color_popup"))
-                    
+
                     with dpg.popup(parent="aimbot_fov_color_field", modal=False, tag="aimbot_fov_color_popup", mousebutton=dpg.mvMouseButton_Left):
                         dpg.add_color_picker(
                             tag="aimbot_fov_color_picker",
@@ -445,9 +448,8 @@ def main():
                             height=100,
                             callback=on_aimbot_fov_color_change
                         )
-                        
+
                     dpg.add_combo(label="Aimbot Region", items=["body", "head", "hitscan"], callback=set_aim_region, tag="aim_region_combo")
-                    dpg.add_slider_float(label="Aimbot Speed", default_value=0.9, min_value=0.1, max_value=2.0, callback=set_aimbot_speed, tag="aimbot_speed_slider")
                     dpg.add_slider_float(label="Aimbot FOV", default_value=75, min_value=50, max_value=200, callback=set_aimbot_fov, tag="aimbot_fov_slider")
                     dpg.add_checkbox(label="Hold-to-use", tag="aimbot_on_hold")
                     dpg.add_input_text(label="Hold Key", default_value="Mouse 2", readonly=True, tag="aimbot_hold_key_field")
