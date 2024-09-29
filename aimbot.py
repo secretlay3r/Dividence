@@ -8,10 +8,11 @@ import random
 VK_XBUTTON4 = 0x05
 enabled = False
 target_colors = []
-aimbot_speed = 0.9
 monitor_resolution = (1920, 1080)
 aimbot_fov = 75
 aim_region = "body"
+aimbot_mode = "smooth"
+aimbot_speed = 1
 
 color_ranges = {
     "ORANGE": {'r': (75, 108), 'g': (140, 244), 'b': (244, 255)},
@@ -33,6 +34,10 @@ def set_monitor_resolution(width, height):
 def set_target_colors(selected_colors):
     global target_colors
     target_colors = [color_ranges[color] for color in selected_colors]
+
+def set_aimbot_mode(mode):
+    global aimbot_mode
+    aimbot_mode = mode
 
 def set_aimbot_speed(speed):
     global aimbot_speed
@@ -91,29 +96,27 @@ def aim_at_target(target_pos, highres):
     highres_center_x = highres['width'] // 2
     
     if aim_region == "body":
-        highres_center_y = highres['height'] // 2
+        highres_center_y = highres['height'] // 1.8
     elif aim_region == "head":
-        highres_center_y = highres['height'] // 1.85
+        highres_center_y = highres['height'] // 1.6
     elif aim_region == "hitscan":
-        highres_center_y = highres['height'] // random.uniform(1.75, 2)
+        highres_center_y = highres['height'] // random.uniform(1.65, 1.9)
 
     target_x, target_y = target_pos
     distance_x = target_x - highres_center_x
     distance_y = target_y - highres_center_y
 
-    if abs(distance_x) > 2 or abs(distance_y) > 2:
-        smooth_move(distance_x, distance_y)
+    smooth_move(distance_x, distance_y)
 
-def smooth_move(dx, dy, speed_factor=None):
-    speed_factor = speed_factor or aimbot_speed
+def smooth_move(dx, dy):
     distance = np.sqrt(dx ** 2 + dy ** 2)
     if distance == 0:
         return
 
-    step_size = max(1, distance / 10) * speed_factor
+    step_size = max(1, distance / 10) * aimbot_speed
     num_steps = int(distance / step_size) + 1
     step_dx, step_dy = dx / num_steps, dy / num_steps
 
     for _ in range(num_steps):
         ctypes.windll.user32.mouse_event(0x0001, int(step_dx), int(step_dy), 0, 0)
-        time.sleep(0.01 / speed_factor)
+        time.sleep(0.01 / aimbot_speed)
