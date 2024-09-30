@@ -30,6 +30,12 @@ Note: The `config.json` file must be in the same folder as the executable for it
 
 ![preview](https://github.com/user-attachments/assets/b4ce2a29-7950-4c02-898a-27d38d9a6c15)
 
+## Important in-game settings
+
+Graphics settings should be lower than `EPIC` settings
+
+For the FOV circle to work, put the game in `windowed fullscreen` mode
+
 ## Quick Installation (Recommended)
 
 Run `build.bat` and it will make all the work for you. (Ensure that Python is installed and added to your system's PATH beforehand.)
