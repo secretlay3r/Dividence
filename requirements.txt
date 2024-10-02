@@ -1,0 +1,31 @@
+# DearPyGui GUI Framework
+dearpygui==1.11.1
+# └────────────────────────────────────> Python GUI framework for creating complex interfaces
+
+# MSS for screenshots
+mss==9.0.2
+# └────────────────────────────────────> A cross-platform library to take screenshots
+
+# NumPy for numerical operations
+numpy==2.1.1
+# └────────────────────────────────────> Fundamental package for scientific computing with Python
+
+# PyWin32 for Windows API
+pywin32==306
+# └────────────────────────────────────> Python extensions for Windows, including APIs like COM and the registry
+
+# PyAutoGUI for automating mouse and keyboard
+PyAutoGUI==0.9.54
+# └────────────────────────────────────> Cross-platform GUI automation module for Python
+
+# Keyboard library for key control
+keyboard==0.13.5
+# └────────────────────────────────────> Hook and simulate global keyboard events
+
+# OpenCV for computer vision
+opencv-python==4.10.0.84
+# └────────────────────────────────────> Library of programming functions mainly aimed at real-time computer vision
+
+# Pynput for mouse and keyboard control
+pynput==1.7.7
+# └────────────────────────────────────> Library to control and monitor input devices like keyboard and mouse

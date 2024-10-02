@@ -52,7 +52,7 @@ Run `build.bat` and it will make all the work for you. (Ensure that Python is in
    Open a terminal or command prompt, then run the following command to install dependencies:
 
    ```
-   pip install dearpygui mss numpy pywin32 pyautogui keyboard opencv-python pynput
+   pip install -r requirements.txt
    ```   
 ## Obfuscating and compiling
 
