@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # Monitor Python dependencies (requirements.txt)
+  - package-ecosystem: "pip"
+    directory: "/app"
+    schedule:
+      interval: "weekly"
