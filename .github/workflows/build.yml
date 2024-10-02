@@ -42,4 +42,4 @@ jobs:
       - name: Clean up
         run: |
           echo Cleaning up...
-          rmdir /s /q venv
+          Remove-Item -Recurse -Force venv
