@@ -31,15 +31,16 @@ jobs:
         run: |
           python -m venv venv
           .\venv\Scripts\activate
-          pip install -r requirements.txt
+        #   pip install -r requirements.txt
 
-      - name: Run build
-        run: |
-          .\venv\Scripts\activate
-          cd app
-          .\build.bat
+    #   - name: Run build
+    #     run: |
+    #       .\venv\Scripts\activate
+    #       cd app
+    #       .\build.bat
 
       - name: Clean up
         run: |
+          deactivate
           echo Cleaning up...
-          rmdir /s /q ../venv
+          rmdir /s /q venv
