@@ -35,9 +35,9 @@ jobs:
 
       - name: Run build
         run: |
-          call .\venv\Scripts\activate
+          .\venv\Scripts\activate
           cd app
-          call build.bat
+          .\build.bat
 
       - name: Clean up
         run: |
