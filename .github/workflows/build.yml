@@ -41,6 +41,5 @@ jobs:
 
       - name: Clean up
         run: |
-          deactivate
           echo Cleaning up...
           rmdir /s /q venv
