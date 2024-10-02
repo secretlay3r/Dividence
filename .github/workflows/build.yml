@@ -35,10 +35,11 @@ jobs:
 
       - name: Run build
         run: |
-          .\venv\Scripts\activate
-          .\build.bat
+          call .\venv\Scripts\activate
+          cd app
+          call build.bat
 
       - name: Clean up
         run: |
           echo Cleaning up...
-          rmdir /s /q venv
+          rmdir /s /q ../venv
