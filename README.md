@@ -12,15 +12,15 @@
   <a href="https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html">UnknownCheats thread</a>
 </p>
 
-**Visual cheat done for research purposes.**
+**Visual cheat developed for research purposes.**
 
 **Supported Resolutions:**
 - 1920x1080
 - 1280x720
 
-Note: The `config.json` file must be in the same folder as the executable for it to work!
+**Note:** Ensure that the `config.json` file is in the same folder as the executable for proper functionality!
 
-**Features:**
+### Features:
 - Color aimbot
 - Color triggerbot
 - No recoil
@@ -30,46 +30,65 @@ Note: The `config.json` file must be in the same folder as the executable for it
 
 ![preview](https://github.com/user-attachments/assets/b4ce2a29-7950-4c02-898a-27d38d9a6c15)
 
-## Important in-game settings
+## Important In-Game Settings
 
-Graphics settings should be lower than `EPIC` settings
-
-For the FOV circle to work, put the game in `windowed fullscreen` mode
+- Set graphics settings lower than `EPIC`.
+- For the FOV circle to function, switch the game to `windowed fullscreen` mode.
 
 ## Quick Installation (Recommended)
 
-Run `build.bat` and it will make all the work for you. (Ensure that Python is installed and added to your system's PATH beforehand.)
+Run `build.bat`, and it will handle the setup for you. (Ensure that Python is installed and added to your system's PATH beforehand.)
 
 ## Manual Installation
 
 1. **Install Python**
    
-   Make sure Python is installed. You can download it from [python.org](https://www.python.org/downloads/).  
-   Be sure to check the box that says "Add Python to PATH" during installation.
-   
-2. **Install Dependencies**
-   
-   Open a terminal or command prompt, then run the following command to install dependencies:
+   Ensure Python is installed on your system. You can download it from [python.org](https://www.python.org/downloads/).  
+   Remember to check the box that says "Add Python to PATH" during installation.
+
+2. **Create and Activate a Virtual Environment**
+
+   Before installing dependencies, it's a good practice to create a virtual environment. Open a terminal or command prompt and run:
+
+   ```
+   python -m venv venv
+   ```
+
+   Then activate the virtual environment:
+
+   - **Windows:**
+     ```
+     venv\Scripts\activate
+     ```
+
+3. **Install Dependencies**
+
+   With the virtual environment activated, run the following command to install the necessary dependencies:
 
    ```
    pip install -r requirements.txt
-   ```   
-## Obfuscating and compiling
+   ```
 
-To obfuscate the files using pyarmor:
-```
-pip install pyinstaller pyarmor
-```
+## Obfuscating and Compiling
 
-Open a command prompt in the directory with all scripts and run:
-```
-pyarmor gen --pack onefile main.py
-```
+To obfuscate the files using PyArmor:
 
-Rename the resulting `dist/main.exe` file and use it.
+1. Install the required packages:
+
+   ```
+   pip install pyinstaller pyarmor
+   ```
+
+2. Open a command prompt in the directory containing all scripts and run:
+
+   ```
+   pyarmor gen --pack onefile main.py
+   ```
+
+3. Rename the resulting `dist/main.exe` file and use it.
 
 ---
 
-  [![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
-  [![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/secretlay3r/Dividence-for-Spectre-Divide)](/../../commits/)
-  [![GitHub stars](https://img.shields.io/github/stars/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/stargazers)
+[![GitHub release](https://img.shields.io/github/release/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/releases)
+[![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/secretlay3r/Dividence-for-Spectre-Divide)](/../../commits/)
+[![GitHub stars](https://img.shields.io/github/stars/secretlay3r/Dividence-for-Spectre-Divide)](https://github.com/secretlay3r/Dividence-for-Spectre-Divide/stargazers)
