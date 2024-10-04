@@ -12,6 +12,10 @@
   <a href="https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html">UnknownCheats thread</a>
 </p>
 
+<p align="center">
+  <mark>USE AT YOUR OWN RISK, YOU WILL BE BANNED FOR THIS IF YOU ARE PLAYING ACTIVELY!</mark>
+</p>
+
 **Visual cheat done for research purposes.**
 
 **Supported Resolutions:**
