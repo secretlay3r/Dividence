@@ -31,6 +31,7 @@ triggerbot_on_hold = False
 
 x_recoil_compensation = 2.0
 y_recoil_compensation = 2.0
+compensation_interval = 0.065
 norecoil_toggle_keys = ["F3"]
 norecoil_hold_key = "Mouse 2"
 norecoil_toggled = False
@@ -174,8 +175,24 @@ def set_aim_region(sender, app_data):
 
 def set_aimbot_speed(sender=None, app_data=None):
     global aimbot_speed
-    aimbot_speed = dpg.get_value("aimbot_speed_slider")
+    aimbot_speed = dpg.get_value(sender)
     aimbot.set_aimbot_speed(aimbot_speed)
+
+def set_aimbot_mode(sender, app_data):
+    global aimbot_smooth_mode
+    aimbot_smooth_mode = app_data == "smooth"
+    aimbot.set_aimbot_mode(aimbot_smooth_mode)
+    
+    if app_data == "custom":
+        dpg.configure_item("aimbot_speed_slider", show=True)
+        set_aimbot_speed()
+    else:
+        dpg.configure_item("aimbot_speed_slider", show=False)
+
+    if aimbot_smooth_mode:
+        aimbot.set_aimbot_speed(0.9)
+    else:
+        aimbot.set_aimbot_speed(2)
 
 def set_aimbot_fov(sender=None, app_data=None):
     global aimbot_fov
@@ -188,10 +205,18 @@ def set_aimbot_mode(sender, app_data):
     aimbot_smooth_mode = app_data == "smooth"
     aimbot.set_aimbot_mode(aimbot_smooth_mode)
     
+    if app_data == "custom":
+        dpg.configure_item("aimbot_speed_slider", show=True)
+        set_aimbot_speed()
+    else:
+        dpg.configure_item("aimbot_speed_slider", show=False)
+
     if aimbot_smooth_mode:
         aimbot.set_aimbot_speed(0.9)
+    elif app_data == "plain":
+        aimbot.set_aimbot_speed(4)
     else:
-        aimbot.set_aimbot_speed(2)
+        aimbot.set_aimbot_speed(dpg.get_value("aimbot_speed_slider"))
 
 def set_scan_area(sender=None, app_data=None):
     global scan_area_size
@@ -381,6 +406,10 @@ def on_triggerbot_fov_circle_toggle(sender, app_data):
     overlay.set_triggerbot_fov_visible(app_data)
     dpg.configure_item("triggerbot_fov_color_field", show=app_data)
     
+def set_compensation_interval_gui(sender, app_data):
+    global compensation_interval
+    compensation_interval = app_data
+    norecoil.set_compensation_interval(compensation_interval)
 
 def open_color_picker(popup_tag):
     dpg.configure_item(popup_tag, show=True)
@@ -427,14 +456,15 @@ def main():
                     dpg.add_button(label="Save Config", callback=lambda: save_config())
                     dpg.add_button(label="Load Config", callback=lambda: load_config())
                     
-                dpg.add_text("Dividence v2.8 by secretlay3r", pos=(155, 260))
+                dpg.add_text("Dividence v2.9 by secretlay3r", pos=(155, 260))
                 dpg.add_text("and community <3", pos=(200, 280))
 
             with dpg.tab(label="Aimbot"):
                 dpg.add_checkbox(label="Enable Aimbot", callback=toggle_aimbot, tag="aimbot_checkbox")
                 
                 with dpg.group(horizontal=False):
-                    dpg.add_combo(label="Aimbot Mode", items=["smooth", "plain"], callback=set_aimbot_mode, tag="aimbot_mode_combo")
+                    dpg.add_combo(label="Preset Mode", items=["smooth", "plain", "custom"], callback=set_aimbot_mode, tag="aimbot_mode_combo")
+                    dpg.add_slider_float(label="Custom Speed", default_value=0.9, min_value=0.1, max_value=2.0, callback=set_aimbot_speed, tag="aimbot_speed_slider", show=False)
                     dpg.add_checkbox(label="Show Aimbot FOV Circle", tag="aimbot_fov_circle_checkbox", callback=on_aimbot_fov_circle_toggle)
                     dpg.add_button(tag="aimbot_fov_color_field", label="", width=50, height=20, show=False, callback=lambda: open_color_picker("aimbot_fov_color_popup"))
 
@@ -449,7 +479,7 @@ def main():
                             callback=on_aimbot_fov_color_change
                         )
 
-                    dpg.add_combo(label="Aimbot Region", items=["body", "head", "hitscan"], callback=set_aim_region, tag="aim_region_combo")
+                    dpg.add_combo(label="Aimbot Region", items=["body", "head", "random"], callback=set_aim_region, tag="aim_region_combo")
                     dpg.add_slider_float(label="Aimbot FOV", default_value=75, min_value=50, max_value=200, callback=set_aimbot_fov, tag="aimbot_fov_slider")
                     dpg.add_checkbox(label="Hold-to-use", tag="aimbot_on_hold")
                     dpg.add_input_text(label="Hold Key", default_value="Mouse 2", readonly=True, tag="aimbot_hold_key_field")
@@ -490,6 +520,14 @@ def main():
                 with dpg.group(horizontal=False):
                     dpg.add_slider_float(label="X-Axis Recoil", default_value=2.0, min_value=0, max_value=10, callback=set_x_recoil, tag="x_recoil_slider")
                     dpg.add_slider_float(label="Y-Axis Recoil", default_value=2.0, min_value=0, max_value=10, callback=set_y_recoil, tag="y_recoil_slider")
+                    dpg.add_slider_float(
+                            label="Compensation Interval",
+                            default_value=compensation_interval,
+                            min_value=0.01,
+                            max_value=0.1,
+                            callback=set_compensation_interval_gui,
+                            tag="compensation_interval_slider"
+                        )
                     dpg.add_checkbox(label="Hold-to-use", tag="norecoil_on_hold")
                     dpg.add_input_text(label="Hold Key", default_value="Mouse 2", readonly=True, tag="norecoil_hold_key_field")
                     with dpg.group(horizontal=True):
