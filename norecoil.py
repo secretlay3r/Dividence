@@ -46,6 +46,10 @@ def set_compensation_speed(new_interval):
     global compensation_interval
     compensation_interval = new_interval
 
+def set_compensation_interval(new_interval):
+    global compensation_interval
+    compensation_interval = new_interval
+    
 def set_x_recoil(new_horizontal_range):
     global horizontal_range
     horizontal_range = new_horizontal_range
