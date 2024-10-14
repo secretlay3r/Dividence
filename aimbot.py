@@ -99,7 +99,7 @@ def aim_at_target(target_pos, highres):
         highres_center_y = highres['height'] // 1.85
     elif aim_region == "head":
         highres_center_y = highres['height'] // 1.7
-    elif aim_region == "hitscan":
+    elif aim_region == "random":
         highres_center_y = highres['height'] // random.uniform(1.67, 1.9)
 
     target_x, target_y = target_pos
