@@ -3,13 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://discord.gg/DnaNjHx7an">
-    <img src="https://img.shields.io/discord/1284573063442071703?style=for-the-badge&logo=discord&logoColor=white&logoSize=auto&label=Discord&color=5865f2" alt="Join our Discord server">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html">UnknownCheats thread</a>
+  <a href="https://www.unknowncheats.me/forum/other-fps-games/660411-spectre-divide-colorbot.html">UnKnoWnCheaTs thread</a>
 </p>
 
 <p align="center">
